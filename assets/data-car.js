@@ -1,14 +1,14 @@
 window.TRIP = {
-  lead: "렌터카를 빌려 차탄 호텔 한 곳에 4박. 아메리칸빌리지와 바다가 걸어서 닿고, 북부는 직접 운전해 하루. 국제운전면허증이 꼭 있어야 한다.",
+  lead: "렌터카를 빌려 레쿠 차탄에 4박. 아메리칸빌리지와 바다가 걸어서 닿고, 북부는 직접 운전해 하루. 국제운전면허증이 꼭 있어야 한다.",
   facts: [
     ["항공", "11/28(토) 15:50 나하 도착 · 12/2(수) 12:40 나하 출발"],
-    ["숙소", "차탄 미하마 1곳 4박 (공항에서 차로 35~45분)"],
+    ["숙소", "레쿠 오키나와 차탄 (공항에서 차로 35~45분)"],
     ["이동", "렌터카 4일 (OTS·타임즈 등 한국어 지원)"],
     ["가장 긴 날", "11/30(월) 북부 드라이브, 편도 약 1시간 반"]
   ],
   places: {
     oka:   { name: "나하공항", q: "Naha Airport", lat: 26.1967, lng: 127.6490 },
-    hotel: { name: "숙소 (더블트리 차탄 · 미하마)", q: "DoubleTree by Hilton Okinawa Chatan Resort", lat: 26.3175, lng: 127.7539 },
+    hotel: { name: "레쿠 오키나와 차탄 스파&리조트", q: "Lequ Okinawa Chatan Spa & Resort", lat: 26.3176, lng: 127.7551 },
     av: { name: "아메리칸빌리지", q: "American Village Chatan", lat: 26.3166, lng: 127.7573 },
     s88: { name: "스테이크하우스88 차탄점", q: "Steak House 88 Chatan", lat: 26.3167, lng: 127.7549 },
     rycom: { name: "이온몰 라이카무", q: "AEON Mall Okinawa Rycom", lat: 26.3142, lng: 127.7959 },
@@ -69,18 +69,9 @@ window.TRIP = {
       ] }
   ],
   hotels: [
-    { hotel: true, name: "더블트리 바이 힐튼 차탄", q: "DoubleTree by Hilton Okinawa Chatan Resort", lat: 26.3175, lng: 127.7539,
-      sub: "트립어드바이저 4.5 (355건, 차탄 1위) · 부킹 9.1", desc: "바다 앞, 아메리칸빌리지까지 걸어서. 주차 1박 500엔(4박 최대 2,000엔).",
-      tags: ["추천 1순위", "걸어서 쇼핑", "가격 미확인"] },
-    { hotel: true, name: "베셀 호텔 캄파나 오키나와", q: "Vessel Hotel Campana Okinawa", lat: 26.3129, lng: 127.7563,
-      sub: "트립어드바이저 4.4 (약 976건)", desc: "대욕장·조식 평이 좋고 선셋비치 옆. 주차 무료(선착순 243대). 약 2만~6만 엔.",
-      tags: ["대욕장", "주차 무료"] },
-    { hotel: true, name: "힐튼 오키나와 차탄 리조트", q: "Hilton Okinawa Chatan Resort", lat: 26.3187, lng: 127.7549,
-      sub: "평점 4.4 (약 1,595건, 미확인)", desc: "리조트 수영장이 있는 대형 호텔. 약 190~334달러. 주차 1박 500엔.",
-      tags: ["리조트", "가장 비쌈"] },
-    { hotel: true, name: "더 비치 타워 오키나와", q: "The Beach Tower Okinawa", lat: 26.3140, lng: 127.7561,
-      sub: "트립어드바이저 4.1 (926건) · 부킹 8.4", desc: "같은 위치에서 가장 저렴. 약 1.3만~3.2만 엔. 주차 1,000엔.",
-      tags: ["가성비"] }
+    { hotel: true, name: "레쿠 오키나와 차탄 스파&리조트", q: "Lequ Okinawa Chatan Spa & Resort", lat: 26.3176, lng: 127.7551,
+      sub: "데포아일랜드 안 · 아메리칸빌리지 걸어서 바로", desc: "스탠다드 트윈 25㎡, 조식 2인, 11/24까지 무료 취소. 천연온천 대욕장, 루프톱 온수풀(유료). 주차 요금은 예약 전 확인.",
+      tags: ["확정", "온천"] }
   ],
   food: [
     { name: "스테이크하우스88 차탄점", q: "Steak House 88 Chatan", lat: 26.3167, lng: 127.7549, sub: "차탄 · 스테이크", desc: "10:00~23:00. 웰던으로 주문.", tags: ["연중무휴"] },
