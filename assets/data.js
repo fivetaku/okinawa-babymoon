@@ -25,7 +25,7 @@ window.TRIP = {
     kouri: { name: "코우리대교", q: "Kouri Bridge", lat: 26.7043, lng: 128.0181 }
   },
   days: [
-    { label: "11/28 토", booking: { label: "Blue Ocean Steak 예약", url: "https://www.tablecheck.com/ja/shops/steak-okinawa/reserve" }, icon: "images/2026-11-08/day1-icon-01.png", title: "도착하고 차탄으로", level: "가벼움",
+    { label: "11/28 토", booking: { label: "Blue Ocean Steak 예약", url: "https://www.tablecheck.com/ja/shops/steak-okinawa/reserve" }, icon: "images/2026-11-08/day1-line-01.png", title: "도착하고 차탄으로", level: "가벼움",
       summary: "15:50 착륙이라 레쿠에 서는 공항 리무진(14:10 한 편)은 못 탄다. 짐 찾고 TK05 북탄 직행셔틀 17:15편, 지치면 택시.",
       stops: [
         { t: "15:50", what: "나하공항 도착 → 짐 수령 (약 16:40)", p: "oka", how: "국내선 1층 도착로비 포타마(포크타마고 오니기리)로 요기 가능" },
@@ -34,7 +34,7 @@ window.TRIP = {
         { t: "19:00", what: "저녁: Blue Ocean Steak (예약) 또는 지구촌 이자카야", p: "av", how: "둘 다 미하마 51-2 2층, 걸어서 5분. 스테이크는 웰던" },
         { t: "20:30", what: "아메리칸빌리지 야경 산책, 블루씰", p: "av", how: "데포아일랜드 블루씰 21시까지" }
       ] },
-    { label: "11/29 일", icon: "images/2026-11-08/day2-icon-01.png", title: "리조트 휴식 + 라이카무 + 아카짱혼포", level: "가벼움",
+    { label: "11/29 일", icon: "images/2026-11-08/day2-line-01.png", title: "리조트 휴식 + 라이카무 + 아카짱혼포", level: "가벼움",
       summary: "오전 리조트, 일요일 라이카무는 12~16시가 가장 붐비니 개점 직후 2시간만. 돌아와 낮잠, 아카짱혼포 들렀다가 선셋비치 일몰.",
       stops: [
         { t: "07:00", what: "조식 → 온수풀·온천 짧게", p: "hotel", how: "온수풀 8:00~18:00(겨울 운영, 성인 2,000엔). 온천 백탕 30도만, 42도 탕은 짧게, 사우나 금지" },
@@ -46,7 +46,7 @@ window.TRIP = {
         { t: "16:30", what: "택시 또는 도보로 복귀 → 선셋비치 일몰 (17:37)", p: "sunset" },
         { t: "18:30", what: "저녁: 키지무나 타코라이스 데포점 또는 JETTA 버거", p: "av", how: "오무타코는 완숙 요청. 디저트는 THE CALIF KITCHEN 팬케이크" }
       ] },
-    { label: "11/30 월", icon: "images/2026-11-08/day3-icon-01.png", title: "나하 쇼핑: 아시비나 → 국제거리", level: "보통",
+    { label: "11/30 월", icon: "images/2026-11-08/day3-line-01.png", title: "나하 쇼핑: 아시비나 → 국제거리", level: "보통",
       summary: "리무진으로 공항까지 가서 버스로 아시비나, 유이레일로 국제거리, 돌아올 땐 택시. 2인 교통비 약 6,000엔 + 택시. 아시비나는 11월 말 세일 막바지 가능성.",
       stops: [
         { t: "08:44", what: "호텔 앞 공항 리무진 102편 (전날 산 승차권)", p: "hotel", how: "10:22 공항 도착. 놓치면 택시 약 40분" },
@@ -58,7 +58,7 @@ window.TRIP = {
         { t: "16:30", what: "로커에서 짐 찾아 택시로 레쿠 (약 40분, 3,000~3,500엔)", p: "hotel", how: "TK05로 돌아가려면 국제거리 입구 17:30편 → 북탄 18:15" },
         { t: "18:30", what: "저녁: 아메리칸빌리지에서 가볍게, 또는 니시마츠야(21시까지) 보충", p: "nishimatsuya", how: "니시마츠야는 택시 5분, 면세 불가, 내의·임부복이 가장 쌈" }
       ] },
-    { label: "12/1 화", booking: { label: "지노투어 예약 페이지", url: "https://experiences.myrealtrip.com/products/3419221" }, icon: "images/2026-11-08/day4-icon-01.png", title: "북부 버스투어 (만좌모·츄라우미·코우리)", level: "가장 긴 날",
+    { label: "12/1 화", booking: { label: "지노투어 예약 페이지", url: "https://experiences.myrealtrip.com/products/3419221" }, icon: "images/2026-11-08/day4-line-01.png", title: "북부 버스투어 (만좌모·츄라우미·코우리)", level: "가장 긴 날",
       summary: "숙소 앞에서 타는 한국어 투어. 츄라우미는 화요일이 한산한 편. 투어 전날을 쉬는 날로 두고, 다음 날은 이동뿐.",
       stops: [
         { t: "09:20", what: "차탄 관광정보센터 2층 앞 집결 → 09:30 지노투어 출발", p: "tic", how: "마이리얼트립 3419221, 1인 확정·한국어 가이드, 수족관 입장 포함. 예약 요청란에 임산부·앞좌석 기재. 나하에서 오는 버스라 조금 늦을 수 있음" },
@@ -67,7 +67,7 @@ window.TRIP = {
         { t: "16:00", what: "코우리대교 (30분)", p: "kouri" },
         { t: "17:30", what: "아메리칸빌리지 하차 → 저녁: 시만추 민요라이브(호텔 2층, 예약) 또는 고디스", p: "hotel", how: "지친 날이라 호텔 건물 안이 편함. 고디스는 택시 5분" }
       ] },
-    { label: "12/2 수", icon: "images/2026-11-08/day5-icon-01.png", title: "귀국", level: "이동만",
+    { label: "12/2 수", icon: "images/2026-11-08/day5-line-01.png", title: "귀국", level: "이동만",
       summary: "호텔 앞 리무진 한 번이면 끝. 13:35 출발이라 3시간 전인 10:22 공항 도착이 딱 맞고, 면세 환급 대기까지 여유 있음.",
       stops: [
         { t: "06:30", what: "조식 → 체크아웃", p: "hotel", how: "지바고 커피는 09:00, 카라바나 도넛은 11:00 개점이라 아침엔 불가" },

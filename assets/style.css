@@ -47,7 +47,7 @@ h2 small{font-weight:400;color:var(--muted);letter-spacing:.04em;text-transform:
 .day{padding:0 0 28px;margin-bottom:28px;border-bottom:var(--rule-h) solid var(--line2);scroll-margin-top:60px}
 .day:last-child{border-bottom:0}
 .day-h{display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:start}
-.day-h img{width:64px;height:64px;object-fit:cover;filter:grayscale(1) contrast(1.05);border:1px solid var(--line2)}
+.day-h img{width:64px;height:64px;object-fit:cover;background:#fff;border:1px solid var(--line2)}
 .day-h .num{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .day-h h3{margin:2px 0 4px;font-size:22px;letter-spacing:-.02em;line-height:1.15;font-weight:700}
 .day-h .meta{font-size:12px;color:var(--muted);letter-spacing:.04em}
