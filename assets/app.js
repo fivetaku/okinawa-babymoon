@@ -6,6 +6,11 @@
   const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const gmap = p => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.q || p.name)}`;
   const place = id => T.places[id];
+  const info = id => (T.placeInfo || {})[id];
+  const dirUrl = (a, b, mode) => `https://www.google.com/maps/dir/?api=1&origin=${a.lat},${a.lng}&destination=${b.lat},${b.lng}&travelmode=${mode}`;
+  const routeUrl = pts => { const u = [...new Map(pts.map(p => [p.q || p.name, p])).values()];
+    return `https://www.google.com/maps/dir/${u.map(p => encodeURIComponent(p.q || p.name)).join("/")}`; };
+  const modeOf = how => /택시|taxi/i.test(how || "") ? "driving" : /도보|걸어서/.test(how || "") ? "walking" : "transit";
   const $ = id => document.getElementById(id);
 
   // 머리글
@@ -35,13 +40,26 @@
         <div class="meta"><span class="badge lv" style="background:${colors[i]}">${esc(d.level)}</span>${isToday ? `<span class="badge">오늘</span>` : ""}</div>
       </div></div>
       <p class="sum">${esc(d.summary)}</p>
+      <div class="daymap" id="dmap${i}"></div>
+      <div class="actions">
+        <a class="btn" target="_blank" rel="noopener" href="${routeUrl(d.stops.map(s => s.p).filter(Boolean).map(place))}">🗺 오늘 전체 경로</a>
+        ${d.booking ? `<a class="btn ghost" target="_blank" rel="noopener" href="${esc(d.booking.url)}">🎫 ${esc(d.booking.label)}</a>` : ""}
+      </div>
       <ol class="tl">${d.stops.map((s, k) => {
         const [h, m] = (s.t || "0:0").split(":").map(Number); const hm = h * 60 + m;
         const next = d.stops[k + 1]; const nhm = next ? next.t.split(":").map(Number).reduce((a, b) => a * 60 + b) : 24 * 60;
         const now = isToday && nowHM >= hm && nowHM < nhm;
+        const prev = d.stops.slice(0, k).reverse().find(x => x.p && x.p !== s.p);
+        const pi = s.p && info(s.p);
+        const chips = [];
+        if (s.p) chips.push(`<a class="chip" target="_blank" rel="noopener" href="${gmap(place(s.p))}">📍 지도</a>`);
+        if (s.p && prev) chips.push(`<a class="chip" target="_blank" rel="noopener" href="${dirUrl(place(prev.p), place(s.p), modeOf(s.how))}">🧭 여기로 길찾기</a>`);
+        if (pi && pi.tel) chips.push(`<a class="chip" href="tel:${esc(pi.tel.replace(/-/g, ""))}">📞 ${esc(pi.tel)}</a>`);
         return `<li${now ? ' class="now"' : ""}><span class="t">${esc(s.t)}</span><div>
-          <div class="what">${s.p ? `<a target="_blank" rel="noopener" href="${gmap(place(s.p))}">${esc(s.what)}</a>` : esc(s.what)}</div>
-          ${s.how ? `<div class="how">${esc(s.how)}</div>` : ""}</div></li>`; }).join("")}
+          <div class="what">${esc(s.what)}</div>
+          ${s.how ? `<div class="how">${esc(s.how)}</div>` : ""}
+          ${pi ? `<div class="pinfo">${pi.hours ? `<span>🕒 ${esc(pi.hours)}</span>` : ""}${pi.addr ? `<span>🏠 ${esc(pi.addr)}</span>` : ""}${pi.note ? `<span>ℹ️ ${esc(pi.note)}</span>` : ""}</div>` : ""}
+          ${chips.length ? `<div class="chips">${chips.join("")}</div>` : ""}</div></li>`; }).join("")}
       </ol></div>`;
   }).join("");
 
@@ -78,6 +96,21 @@
     if (scroll && i >= 0) $("day" + i).scrollIntoView({ block: "start", behavior: "smooth" });
   }
   select(todayIdx >= 0 ? todayIdx : -1, false);
+
+  // 일자별 미니 지도: 숫자 핀 + 경로
+  T.days.forEach((d, i) => {
+    const el = $("dmap" + i); const pts = []; const seen = new Set();
+    d.stops.forEach(s => { if (s.p && !seen.has(s.p)) { seen.add(s.p); pts.push(place(s.p)); } });
+    if (!el || pts.length < 2) { if (el) el.remove(); return; }
+    const m = L.map(el, { scrollWheelZoom: false, dragging: !L.Browser.mobile, zoomControl: false, attributionControl: false });
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 18 }).addTo(m);
+    pts.forEach((p, k) => L.marker([p.lat, p.lng], { icon: L.divIcon({ className: "", iconSize: [24, 24], iconAnchor: [12, 12],
+      html: `<div class="pin" style="background:${colors[i]}">${k + 1}</div>` }) })
+      .bindPopup(`<b>${k + 1}. ${esc(p.name)}</b><br><a target="_blank" href="${gmap(p)}">구글 지도</a>`).addTo(m));
+    L.polyline(pts.map(p => [p.lat, p.lng]), { color: colors[i], weight: 3, opacity: .7, dashArray: "6 6" }).addTo(m);
+    m.fitBounds(L.latLngBounds(pts.map(p => [p.lat, p.lng])).pad(0.25));
+    const io = new IntersectionObserver(e => { if (e[0].isIntersecting) { m.invalidateSize(); io.disconnect(); } }); io.observe(el);
+  });
 
   // 식당·숙소 카드
   const cards = (list, el) => $(el).innerHTML = list.map(x => `
