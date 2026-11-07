@@ -1,34 +1,42 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#fbf7f1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="오키나와">
 <title>오키나와 태교여행 2026.11.28 – 12.02</title>
+<link rel="preload" as="image" href="images/2026-11-08/okinawa-babymoon-hero-01.png">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="assets/style.css"></head><body>
-<header class="hero"><div class="wrap">
-<div class="eyebrow">OKINAWA BABYMOON · 2026.11.28 – 12.02</div>
-<h1>오키나와 태교여행 일정</h1>
-<p class="lead">숙소는 레쿠 오키나와 차탄 4박. 확정안은 렌터카 없이 리무진·버스투어·택시로 다니는 일정이다. 렌터카 안은 참고용으로 남겨 둔다. 하루 큰 일정은 하나, 오후엔 쉬는 시간.</p>
-<div class="switch"><a class="on" href="index.html">비교</a><a href="nocar.html">렌터카 없이</a><a href="car.html">렌터카로</a></div>
-</div></header>
+
+<header class="hero">
+  <img src="images/2026-11-08/okinawa-babymoon-hero-01.png" alt="차탄 선셋비치에서 석양을 보는 부부 일러스트">
+  <div class="over"></div>
+  <div class="txt"><div>
+    <div class="eyebrow">OKINAWA BABYMOON · 11.28 – 12.02</div>
+    <h1>오키나와 태교여행</h1>
+    <p class="lead" id="lead"></p>
+  </div></div>
+</header>
+
+<div class="wrap"><div class="facts" id="facts"></div></div>
+
+<div class="tabsbar"><div class="tabs" id="tabs"></div></div>
+
 <main class="wrap">
-<section><div class="grid">
-  <a class="card" href="nocar.html" style="text-decoration:none;color:inherit">
-    <h4>🚝 확정안 · 렌터카 없이 · 레쿠 차탄 4박</h4><div class="sub">공항 리무진·TK05 셔틀 + 아메리칸빌리지 출발 북부 투어 + 택시</div>
-    <p>운전·국제면허 걱정이 없다. 숙소가 아메리칸빌리지 안이라 걸어서 다니고, 북부 투어도 숙소 앞에서 출발. 쇼핑은 라이카무·아시비나·국제거리를 하루씩 나눠서.</p>
-    <span class="tag">운전 없음</span><span class="tag">걸어서 쇼핑</span><span class="tag">택시·버스</span></a>
-  <a class="card" href="car.html" style="text-decoration:none;color:inherit">
-    <h4>🚗 참고안 · 렌터카로 · 레쿠 차탄 4박</h4><div class="sub">채택하지 않음 · 비교용으로만 보관</div>
-    <p>쉬고 싶을 때 바로 돌아오고, 쇼핑몰·아울렛을 자유롭게. 대신 국제운전면허증이 필요하고 좌측통행 운전, 반납 시간에 맞춰 움직여야 한다.</p>
-    <span class="tag">자유로운 동선</span><span class="tag">쇼핑</span><span class="tag warn">국제운전면허 필수</span></a>
-</div></section>
-<section><h2>한눈에 비교</h2>
-<div class="card" style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:14px">
-<tr><th style="text-align:left;padding:6px"></th><th style="text-align:left;padding:6px">렌터카 없이</th><th style="text-align:left;padding:6px">렌터카로</th></tr>
-<tr><td style="padding:6px;color:#6b7780">숙소</td><td style="padding:6px">레쿠 차탄 (아메리칸빌리지)</td><td style="padding:6px">레쿠 차탄 (아메리칸빌리지)</td></tr>
-<tr><td style="padding:6px;color:#6b7780">북부 가는 날</td><td style="padding:6px">한국어 버스투어, 아메리칸빌리지 09:30 출발</td><td style="padding:6px">직접 운전, 편도 약 1시간 반</td></tr>
-<tr><td style="padding:6px;color:#6b7780">쇼핑</td><td style="padding:6px">라이카무(일) · 아시비나+국제거리(월, 리무진+버스) · 아메리칸빌리지(매일)</td><td style="padding:6px">라이카무 · 아시비나 · 아메리칸빌리지</td></tr>
-<tr><td style="padding:6px;color:#6b7780">준비물</td><td style="padding:6px">택시비, 투어 예약</td><td style="padding:6px">국제운전면허증, 보험 NOC 면책</td></tr>
-<tr><td style="padding:6px;color:#6b7780">피로도</td><td style="padding:6px">긴 날 1번(투어), 나머지 가벼움</td><td style="padding:6px">운전하는 사람이 피곤, 동승자는 편함</td></tr>
-</table></div></section>
+  <section><h2>일정 <small>시간을 누르면 구글 지도</small></h2><div id="days"></div></section>
+  <section><h2>지도</h2><div id="map"></div></section>
+  <section><h2>예약·확인 체크리스트 <small>이 폰에 저장됨</small></h2><ul class="ck" id="ck"></ul></section>
+  <section><h2>식당 <small>평점은 집계 사이트 값, 방문 전 구글맵 재확인</small></h2><div class="grid" id="food"></div></section>
+  <section><h2>숙소</h2><div class="grid" id="hotels"></div></section>
+  <section><h2>긴급·보여줄 문구</h2><div class="kv" id="em"></div></section>
+  <section><h2>팁</h2><ul class="tips" id="tips"></ul></section>
+  <section><h2>출처</h2><ul class="src" id="src"></ul></section>
 </main>
-<footer class="wrap"><p>조사 시점 2026-11-08. 가격·영업시간·평점은 예약 전 다시 확인.</p></footer>
+<footer>조사 2026-11-08 · 렌터카 없이 확정안 · 가격·영업시간은 현장에서 다시 확인</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
 </body></html>
