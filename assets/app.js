@@ -6,6 +6,8 @@
   const place = id => T.places[id];
   const info = id => (T.placeInfo || {})[id];
   const dirUrl = (a, b, mode) => `https://www.google.com/maps/dir/?api=1&origin=${a.lat},${a.lng}&destination=${b.lat},${b.lng}&travelmode=${mode}`;
+  // origin 생략 = 구글맵이 현재 위치(GPS)를 출발지로 씀
+  const hereUrl = (b, mode) => `https://www.google.com/maps/dir/?api=1&destination=${b.lat},${b.lng}&travelmode=${mode}`;
   const routeUrl = pts => { const u = [...new Map(pts.map(p => [p.q || p.name, p])).values()];
     return `https://www.google.com/maps/dir/${u.map(p => encodeURIComponent(p.q || p.name)).join("/")}`; };
   const modeOf = how => /택시|taxi/i.test(how || "") ? "driving" : /도보|걸어서/.test(how || "") ? "walking" : "transit";
@@ -54,7 +56,8 @@
         const prev = d.stops.slice(0, k).reverse().find(x => x.p && x.p !== s.p);
         const pi = s.p && info(s.p); const mode = modeOf(s.how);
         const chips = [];
-        if (s.p && prev) chips.push(`<a class="chip primary" target="_blank" rel="noopener" href="${dirUrl(place(prev.p), place(s.p), mode)}">길찾기</a>`);
+        if (s.p) chips.push(`<a class="chip primary" target="_blank" rel="noopener" href="${hereUrl(place(s.p), mode)}">현재 위치에서</a>`);
+        if (s.p && prev) chips.push(`<a class="chip" target="_blank" rel="noopener" href="${dirUrl(place(prev.p), place(s.p), mode)}">${esc(place(prev.p).name.split(" (")[0])}에서</a>`);
         if (s.p) chips.push(`<a class="chip" target="_blank" rel="noopener" href="${gmap(place(s.p))}">지도</a>`);
         if (pi && pi.tel) chips.push(`<a class="chip" href="tel:${esc(pi.tel.replace(/-/g, ""))}">${esc(pi.tel)}</a>`);
         const leg = s.p && prev ? `<li class="leg">${modeKo[mode]}${s.leg ? " · " + esc(s.leg) : ""}</li>` : "";
