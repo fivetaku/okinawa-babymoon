@@ -94,7 +94,7 @@
     if (b.getLayers().length) map.fitBounds(b.getBounds().pad(0.15));
     tabs.querySelectorAll("button").forEach(el => el.classList.toggle("on", +el.dataset.i === i));
     document.querySelectorAll(".day").forEach((el, k) => el.style.display = (i === -1 || k === i) ? "" : "none");
-    if (scroll && i >= 0) $("day" + i).scrollIntoView({ block: "start", behavior: "smooth" });
+    if (scroll && i >= 0) $("day" + i).scrollIntoView({ block: "start", behavior: "instant" });
   }
   select(todayIdx >= 0 ? todayIdx : -1, false);
 
