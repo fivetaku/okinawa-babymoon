@@ -13,8 +13,12 @@
   const modeOf = how => /택시|taxi/i.test(how || "") ? "driving" : /도보|걸어서/.test(how || "") ? "walking" : "transit";
   const $ = id => document.getElementById(id);
 
-  // 머리글
+  // 머리글 + D-day
   $("lead").textContent = T.lead;
+  (() => { const st = new Date(2026, 10, 28), en = new Date(2026, 11, 2), now = new Date(); now.setHours(0,0,0,0);
+    const dd = Math.round((st - now) / 864e5);
+    let txt = dd > 0 ? `<b>D-${dd}</b> · 11/28(토) – 12/2(수) · 4박 5일` : now <= en ? `<b>여행 ${Math.round((now - st) / 864e5) + 1}일째</b> · 11/28(토) – 12/2(수)` : `11/28(토) – 12/2(수) · 4박 5일`;
+    $("status").innerHTML = txt; })();
   $("facts").innerHTML = T.facts.map(f => `<div class="fact"><b>${esc(f[0])}</b>${esc(f[1])}</div>`).join("");
 
   // 오늘 날짜 → 해당 일차 (여행 기간 밖이면 -1)
@@ -52,10 +56,11 @@
         const prev = d.stops.slice(0, k).reverse().find(x => x.p && x.p !== s.p);
         const pi = s.p && info(s.p);
         const chips = [];
-        if (s.p) chips.push(`<a class="chip" target="_blank" rel="noopener" href="${gmap(place(s.p))}">📍 지도</a>`);
-        if (s.p && prev) chips.push(`<a class="chip" target="_blank" rel="noopener" href="${dirUrl(place(prev.p), place(s.p), modeOf(s.how))}">🧭 여기로 길찾기</a>`);
+        if (s.p && prev) chips.push(`<a class="chip primary" target="_blank" rel="noopener" href="${dirUrl(place(prev.p), place(s.p), modeOf(s.how))}">🧭 길찾기</a>`);
+        if (s.p) chips.push(`<a class="chip" target="_blank" rel="noopener" href="${gmap(place(s.p))}">📍 지도에서 보기</a>`);
         if (pi && pi.tel) chips.push(`<a class="chip" href="tel:${esc(pi.tel.replace(/-/g, ""))}">📞 ${esc(pi.tel)}</a>`);
-        return `<li${now ? ' class="now"' : ""}><span class="t">${esc(s.t)}</span><div>
+        const legTxt = s.p && prev ? (modeOf(s.how) === "walking" ? "🚶 도보" : modeOf(s.how) === "driving" ? "🚕 택시" : "🚌 버스·전철") + (s.leg ? " · " + s.leg : "") : "";
+        return `${legTxt ? `<li class="leg">${legTxt}</li>` : ""}<li${now ? ' class="now"' : ""}><span class="t">${esc(s.t)}</span><div>
           <div class="what">${esc(s.what)}</div>
           ${s.how ? `<div class="how">${esc(s.how)}</div>` : ""}
           ${pi ? `<div class="pinfo">${pi.hours ? `<span>🕒 ${esc(pi.hours)}</span>` : ""}${pi.addr ? `<span>🏠 ${esc(pi.addr)}</span>` : ""}${pi.note ? `<span>ℹ️ ${esc(pi.note)}</span>` : ""}</div>` : ""}
