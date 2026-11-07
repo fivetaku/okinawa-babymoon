@@ -34,7 +34,7 @@ h1{font-size:clamp(24px,6vw,34px);margin:4px 0 4px;line-height:1.2;letter-spacin
 .tabs button{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--ink);white-space:nowrap}
 .tabs button.on{color:#fff;border-color:transparent}
 
-section{padding:28px 0 8px}
+section{padding:22px 0 6px}
 h2{font-size:19px;margin:0 0 12px;letter-spacing:-.01em}
 h2 small{font-weight:500;color:var(--muted);font-size:13px;margin-left:6px}
 
@@ -49,7 +49,10 @@ h2 small{font-weight:500;color:var(--muted);font-size:13px;margin-left:6px}
 .badge.lv{color:#fff}
 .day p.sum{color:var(--muted);margin:10px 0 8px;font-size:13.5px}
 ol.tl{list-style:none;margin:0;padding:0;position:relative}
-ol.tl li{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:10px 0;border-top:1px dashed var(--line);position:relative}
+ol.tl{counter-reset:stop}
+ol.tl li{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:10px 0 10px 4px;border-top:1px dashed var(--line);position:relative;counter-increment:stop}
+ol.tl li .t::after{content:counter(stop);position:absolute;left:-4px;top:12px;width:18px;height:18px;border-radius:50%;background:var(--sand);color:var(--ink);font-size:10px;font-weight:800;display:grid;place-items:center;transform:translateX(-100%)}
+@media(max-width:420px){ol.tl li .t::after{display:none}}
 ol.tl li:first-child{border-top:0}
 .t{font-weight:800;font-size:13px;color:var(--sea);font-variant-numeric:tabular-nums;padding-top:2px}
 .what{font-weight:600;font-size:15px}
@@ -60,7 +63,7 @@ li.now{background:linear-gradient(90deg,rgba(224,122,95,.08),transparent);margin
 li.now .t::before{content:"● ";color:var(--coral)}
 
 /* map */
-#map{height:300px;border-radius:var(--r);border:1px solid var(--line);z-index:0}
+#map{height:240px;border-radius:var(--r);border:1px solid var(--line);z-index:0}
 
 /* cards */
 .grid{display:grid;grid-template-columns:1fr;gap:10px}
