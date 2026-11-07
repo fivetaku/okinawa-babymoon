@@ -1,0 +1,125 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Mockup — Interactive</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  .mk{border:2px solid #111;padding:14px 16px;margin:0 0 36px}
+  .mk .lab{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#767676;margin-bottom:4px}
+  .mk h3{margin:0 0 6px;font-size:18px}
+  .mk p.d{margin:0 0 14px;font-size:13px;color:#444}
+  .mk .try{font-size:11px;letter-spacing:.08em;text-transform:uppercase;border-left:3px solid #111;padding-left:8px;margin:0 0 12px;color:#111}
+  /* A: pin ↔ item */
+  .pin.on{width:30px;height:30px;font-size:13px;background:#fff;color:#111;box-shadow:0 0 0 2px #111}
+  li.stop.hl{background:#111;color:#fff;margin:0 -8px;padding-inline:8px}
+  li.stop.hl .how,li.stop.hl .t{color:#ddd}
+  /* B: now bar */
+  .nowbar{position:sticky;top:0;z-index:30;background:#111;color:#fff;padding:10px 16px;display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin:0 -20px 16px}
+  .nowbar b{font-size:15px}
+  .nowbar .nx{color:#bbb;font-size:12px}
+  .nowbar .clock{font-variant-numeric:tabular-nums}
+  .nowbar input{width:90px;accent-color:#fff;margin-left:8px;vertical-align:middle}
+  /* C: yen toggle */
+  .yen{border-bottom:1px dashed #111;cursor:pointer;font-variant-numeric:tabular-nums}
+  .yen small{color:#767676;font-size:.85em;margin-left:3px}
+  .fx{display:flex;justify-content:space-between;align-items:center;border:1px solid #e2e2e2;padding:8px 10px;font-size:12px;margin-bottom:10px}
+  .fx button{border:1px solid #111;background:#fff;padding:4px 10px;font-family:inherit;font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+  .fx button.on{background:#111;color:#fff}
+  /* D: check off */
+  li.stop.done .what,li.stop.done .how{color:#aaa;text-decoration:line-through}
+  li.stop .tick{width:18px;height:18px;border:1.5px solid #111;display:inline-block;vertical-align:middle;margin-right:8px;cursor:pointer;position:relative;flex:none}
+  li.stop.done .tick::after{content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;border:solid #111;border-width:0 2px 2px 0;transform:rotate(45deg)}
+  li.stop .wrow{display:flex;align-items:flex-start}
+  .prog{height:2px;background:#e2e2e2;margin:0 0 12px}.prog i{display:block;height:100%;background:#111;width:0}
+</style></head><body>
+<div class="wrap">
+  <div class="top"><b>Okinawa</b><span class="mono">Mockup · Interactive</span></div>
+  <header class="hero" style="padding-bottom:8px">
+    <h1 style="font-size:32px">인터랙티브 목업</h1>
+    <p class="lead">아래 네 가지는 실제 11/30 데이터로 동작합니다. 마음에 드는 것만 본 페이지에 넣습니다.</p>
+  </header>
+</div>
+<main class="wrap">
+
+<div class="mk" id="mkA">
+  <div class="lab">A</div><h3>지도 핀과 일정 항목 연동</h3>
+  <p class="d">일정 항목을 누르면 지도에서 그 핀이 커지고, 핀을 누르면 해당 항목이 검게 강조되며 그 위치로 이동합니다. 지금 본 페이지에선 둘이 따로 놉니다.</p>
+  <div class="try">Try: 아래 핀이나 항목을 누르세요</div>
+  <div class="daymap" id="mapA" style="height:220px"></div>
+  <ol class="tl" id="listA"></ol>
+</div>
+
+<div class="mk" id="mkB">
+  <div class="lab">B</div><h3>"지금" 자동 추적 바</h3>
+  <p class="d">여행 중 페이지를 열면 상단에 현재 일정과 다음 일정이 고정되고, 현재 항목으로 자동 이동합니다. 아래 슬라이더로 시각을 바꿔 보세요.</p>
+  <div class="try">Try: 시각 슬라이더를 움직이세요</div>
+  <div class="nowbar" style="position:relative;margin:0 0 12px"><div><b id="nowWhat">—</b><div class="nx" id="nowNext"></div></div><div><span class="clock" id="nowClock">08:00</span><input type="range" id="clock" min="480" max="1140" step="5" value="480"></div></div>
+  <ol class="tl" id="listB"></ol>
+</div>
+
+<div class="mk" id="mkC">
+  <div class="lab">C</div><h3>엔 → 원 표시 토글</h3>
+  <p class="d">본문의 엔화 금액 옆에 원화를 같이 보여 줍니다. 환율은 페이지를 열 때 한 번 받아오고, 실패하면 고정값을 씁니다. 금액을 눌러도 바뀝니다.</p>
+  <div class="try">Try: KRW 버튼 또는 금액을 누르세요</div>
+  <div class="fx"><span>환율 <b id="fxRate">1 JPY = 9.2 KRW</b> <span id="fxSrc" style="color:#767676">(고정값)</span></span><button id="fxBtn">KRW 보기</button></div>
+  <ol class="tl" id="listC"></ol>
+</div>
+
+<div class="mk" id="mkD">
+  <div class="lab">D</div><h3>일정 항목 체크 오프</h3>
+  <p class="d">끝낸 항목을 체크하면 흐려지고 진행률이 올라갑니다. 폰에 저장되어 다시 열어도 유지됩니다.</p>
+  <div class="try">Try: 왼쪽 네모를 누르세요</div>
+  <div class="prog"><i id="progBar"></i></div>
+  <ol class="tl" id="listD"></ol>
+</div>
+
+</main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="../assets/data.js"></script>
+<script>
+(function(){
+  const T=window.TRIP, D=T.days[2]; const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const place=id=>T.places[id];
+  const TILE="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}";
+  const row=(s,k,extra="")=>`<li class="stop" data-k="${k}"><span class="t">${esc(s.t)}</span><div><div class="wrow">${extra}<div><div class="what">${esc(s.what)}</div>${s.how?`<div class="how">${esc(s.how)}</div>`:""}</div></div></div></li>`;
+
+  // A
+  const stopsA=D.stops.filter(s=>s.p); const seen=new Set(); const pts=[]; stopsA.forEach(s=>{ if(!seen.has(s.p)){seen.add(s.p);pts.push({...place(s.p),id:s.p});} });
+  document.getElementById("listA").innerHTML=stopsA.map((s,k)=>row(s,k)).join("");
+  const mA=L.map("mapA",{scrollWheelZoom:false,zoomControl:false,attributionControl:false}); L.tileLayer(TILE,{maxZoom:16}).addTo(mA);
+  const markers={}; pts.forEach((p,i)=>{ markers[p.id]=L.marker([p.lat,p.lng],{icon:L.divIcon({className:"",iconSize:[22,22],iconAnchor:[11,11],html:`<div class="pin" data-id="${p.id}">${i+1}</div>`})}).addTo(mA);
+    markers[p.id].on("click",()=>{ const k=stopsA.findIndex(s=>s.p===p.id); hiA(k); document.querySelector(`#listA li[data-k="${k}"]`).scrollIntoView({block:"center"}); }); });
+  L.polyline(pts.map(p=>[p.lat,p.lng]),{color:"#111",weight:1.5,dashArray:"4 5"}).addTo(mA); mA.fitBounds(L.latLngBounds(pts.map(p=>[p.lat,p.lng])).pad(.25));
+  function hiA(k){ document.querySelectorAll("#listA li").forEach(l=>l.classList.toggle("hl",+l.dataset.k===k)); document.querySelectorAll("#mapA .pin").forEach(e=>e.classList.toggle("on",e.dataset.id===stopsA[k].p)); mA.panTo([place(stopsA[k].p).lat,place(stopsA[k].p).lng]); }
+  document.querySelectorAll("#listA li").forEach(l=>l.onclick=()=>hiA(+l.dataset.k));
+
+  // B
+  const hm=t=>t.split(":").map(Number).reduce((a,b)=>a*60+b);
+  document.getElementById("listB").innerHTML=D.stops.map((s,k)=>row(s,k)).join("");
+  const clk=document.getElementById("clock");
+  function tick(){ const v=+clk.value; document.getElementById("nowClock").textContent=`${String(Math.floor(v/60)).padStart(2,"0")}:${String(v%60).padStart(2,"0")}`;
+    let cur=-1; D.stops.forEach((s,k)=>{ if(hm(s.t)<=v) cur=k; });
+    document.getElementById("nowWhat").textContent=cur>=0?D.stops[cur].what:"아직 시작 전";
+    const nx=D.stops[cur+1]; document.getElementById("nowNext").textContent=nx?`다음 ${nx.t} · ${nx.what}`:"오늘 일정 끝";
+    document.querySelectorAll("#listB li").forEach((l,k)=>l.classList.toggle("now",k===cur)); }
+  clk.oninput=tick; tick();
+
+  // C
+  let rate=9.2, src="고정값", showKrw=false;
+  document.getElementById("listC").innerHTML=D.stops.map((s,k)=>row(s,k)).join("");
+  const fmt=()=>{ document.querySelectorAll("#listC .what,#listC .how").forEach(el=>{ if(!el.dataset.raw) el.dataset.raw=el.textContent;
+    el.innerHTML=esc(el.dataset.raw).replace(/([\d,]+)\s*엔/g,(m,n)=>{ const y=+n.replace(/,/g,""); return `<span class="yen">${n}엔${showKrw?`<small>≈ ${Math.round(y*rate/100)*100 .toLocaleString()}원</small>`:""}</span>`; }); });
+    document.getElementById("fxBtn").classList.toggle("on",showKrw); document.getElementById("fxBtn").textContent=showKrw?"JPY만":"KRW 보기"; };
+  document.getElementById("fxBtn").onclick=()=>{showKrw=!showKrw;fmt();}; document.getElementById("listC").onclick=e=>{ if(e.target.closest(".yen")){showKrw=!showKrw;fmt();} };
+  fetch("https://open.er-api.com/v6/latest/JPY").then(r=>r.json()).then(j=>{ if(j.rates&&j.rates.KRW){ rate=j.rates.KRW; src="실시간"; document.getElementById("fxRate").textContent=`1 JPY = ${rate.toFixed(2)} KRW`; document.getElementById("fxSrc").textContent=`(${src})`; fmt(); } }).catch(()=>{}); fmt();
+
+  // D
+  const KEY="okinawa-mock-done"; const done=new Set(JSON.parse(localStorage.getItem(KEY)||"[]"));
+  document.getElementById("listD").innerHTML=D.stops.map((s,k)=>row(s,k,`<span class="tick"></span>`)).join("");
+  const prog=()=>{ document.getElementById("progBar").style.width=(done.size/D.stops.length*100)+"%"; };
+  document.querySelectorAll("#listD li").forEach(l=>{ const k=l.dataset.k; l.classList.toggle("done",done.has(k)); l.querySelector(".tick").onclick=()=>{ done.has(k)?done.delete(k):done.add(k); l.classList.toggle("done",done.has(k)); localStorage.setItem(KEY,JSON.stringify([...done])); prog(); }; }); prog();
+})();
+</script>
+</body></html>
