@@ -1,0 +1,238 @@
+[
+ {
+  "id": "d3-summary",
+  "branch": "itinerary",
+  "q": "11월 30일 일정 순서대로 알려줘",
+  "must": [
+   "12:00",
+   "TK05",
+   "국제거리",
+   "아시비나",
+   "18:02",
+   "18:45",
+   "19:45"
+  ],
+  "must_not": [
+   "문서에는 없어요"
+  ]
+ },
+ {
+  "id": "d3-return",
+  "branch": "itinerary",
+  "q": "아시비나에서 호텔로 어떻게 돌아와?",
+  "must": [
+   "95번",
+   "18:02",
+   "18:45",
+   "TK05",
+   "차탄"
+  ],
+  "must_not": [
+   "문서에는 없어요"
+  ]
+ },
+ {
+  "id": "d1-arrival",
+  "branch": "itinerary",
+  "q": "도착하는 날 공항에서 호텔까지 어떻게 가?",
+  "must": [
+   "TK05",
+   "17:15",
+   "⑤",
+   "18:25",
+   "차탄 게이트웨이"
+  ],
+  "must_not": []
+ },
+ {
+  "id": "d1-arrival-price",
+  "branch": "itinerary",
+  "q": "TK05 셔틀 얼마고 예약 필요해?",
+  "must": [
+   "1,000엔",
+   "예약"
+  ],
+  "must_not": [
+   "문서에는 없어요"
+  ]
+ },
+ {
+  "id": "d2-akachan",
+  "branch": "itinerary",
+  "q": "아카짱혼포는 언제 어떻게 가기로 했어?",
+  "must": [
+   "11월 29일",
+   "15:30",
+   "걸어서",
+   "함비타운"
+  ],
+  "must_not": []
+ },
+ {
+  "id": "d2-pool",
+  "branch": "itinerary",
+  "q": "온수풀 몇 시부터 몇 시까지고 얼마야?",
+  "must": [
+   "8",
+   "18",
+   "2,000엔"
+  ],
+  "must_not": [
+   "문서에는 없어요"
+  ]
+ },
+ {
+  "id": "d4-tour",
+  "branch": "itinerary",
+  "q": "북부투어 집결 장소랑 시간은?",
+  "must": [
+   "차탄 관광정보센터",
+   "09:20"
+  ],
+  "must_not": []
+ },
+ {
+  "id": "d4-lunch",
+  "branch": "itinerary",
+  "q": "츄라우미에서 점심은 어디서 먹기로 했어?",
+  "must": [
+   "오션블루",
+   "1,000엔"
+  ],
+  "must_not": [
+   "소바가 있"
+  ]
+ },
+ {
+  "id": "d5-limo",
+  "branch": "itinerary",
+  "q": "귀국하는 날 리무진 몇 시에 타? 승차권은 어디서 사?",
+  "must": [
+   "08:44",
+   "10:22",
+   "프런트"
+  ],
+  "must_not": []
+ },
+ {
+  "id": "d5-taxfree",
+  "branch": "itinerary",
+  "q": "면세 환급은 공항에서 어떻게 해?",
+  "must": [
+   "3F",
+   "키오스크",
+   "체크인"
+  ],
+  "must_not": []
+ },
+ {
+  "id": "food-avoid",
+  "branch": "itinerary",
+  "q": "임산부가 식당에서 피해야 할 메뉴 알려줘",
+  "must": [
+   "회",
+   "반숙",
+   "생햄"
+  ],
+  "must_not": []
+ },
+ {
+  "id": "food-phrase",
+  "branch": "itinerary",
+  "q": "식당에 보여줄 일본어 문구 뭐였지?",
+  "must": [
+   "妊娠中です"
+  ],
+  "must_not": []
+ },
+ {
+  "id": "onsen",
+  "branch": "itinerary",
+  "q": "호텔 온천 몇 도고 임산부는 어디까지 들어가도 돼?",
+  "must": [
+   "42",
+   "30",
+   "사우나"
+  ],
+  "must_not": []
+ },
+ {
+  "id": "checklist",
+  "branch": "itinerary",
+  "q": "11월 24일까지 뭘 끝내야 해?",
+  "must": [
+   "무료 취소",
+   "환불"
+  ],
+  "must_not": []
+ },
+ {
+  "id": "dinner-d1",
+  "branch": "itinerary",
+  "q": "첫날 저녁 어디 예약했어?",
+  "must": [
+   "Blue Ocean",
+   "19:00",
+   "웰던"
+  ],
+  "must_not": []
+ },
+ {
+  "id": "muji",
+  "branch": "itinerary",
+  "q": "무인양품은 어디서 볼 수 있어?",
+  "must": [
+   "비타운"
+  ],
+  "must_not": [
+   "라이카무에 있"
+  ]
+ },
+ {
+  "id": "oos-refuse",
+  "branch": "itinerary",
+  "q": "호텔 수영장 수온이 몇 도야?",
+  "must": [],
+  "must_not": [
+   "수온은 3",
+   "수온은 2",
+   "도입니다"
+  ],
+  "any_of": [
+   "없어요",
+   "공개되어 있지 않",
+   "확인할 수 없"
+  ]
+ },
+ {
+  "id": "rt-hours",
+  "branch": "realtime",
+  "q": "츄라우미 수족관 오늘 영업시간 알려줘",
+  "must": [
+   "08:30",
+   "18:30"
+  ],
+  "must_not": []
+ },
+ {
+  "id": "rt-weather",
+  "branch": "realtime",
+  "q": "지금 오키나와 날씨 어때?",
+  "must": [],
+  "must_not": [],
+  "any_of": [
+   "℃",
+   "°C",
+   "도"
+  ]
+ },
+ {
+  "id": "rt-rate",
+  "branch": "realtime",
+  "q": "지금 엔화 환율 얼마야?",
+  "must": [
+   "원"
+  ],
+  "must_not": []
+ }
+]

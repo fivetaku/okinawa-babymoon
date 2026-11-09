@@ -1,0 +1,381 @@
+app:
+  description: 오키나와 태교여행 일정 페이지 전용 도우미. 일정·장소·식당은 지식베이스로, 실시간 정보는 웹검색으로 답한다.
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: advanced-chat
+  name: 오키나와 여행 도우미
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai_api_compatible:0.0.73@4cf123ffaa4556f079bed6c47f3a462cc825504b859b183239e74eb19136a4b5
+    version: null
+kind: app
+site:
+  chat_color_theme: null
+  chat_color_theme_inverted: false
+  copyright: null
+  custom_disclaimer: ''
+  default_language: en-US
+  description: null
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  input_placeholder: null
+  privacy_policy: null
+  show_workflow_steps: true
+  title: 오키나와 여행 도우미
+  use_icon_as_answer_icon: false
+version: 0.7.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 50
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        knowledge_file_size_limit: 50
+        single_chunk_attachment_limit: 10
+        skill_file_size_limit: 50
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: 일정, 장소, 식당, 가는 법, 체크리스트 무엇이든 물어보세요. 오늘 날씨나 영업 여부처럼 실시간 정보가
+      필요하면 검색해서 답합니다.
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions:
+    - 오늘 일정 요약해 줘
+    - 아시비나에서 호텔로 어떻게 돌아와?
+    - 임산부가 피해야 할 메뉴는?
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - id: 1794193445509-source-classify
+      source: '1794193445509'
+      sourceHandle: source
+      target: classify
+      targetHandle: target
+      type: custom
+      zIndex: 0
+      data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: question-classifier
+    - id: classify-itinerary-kb
+      source: classify
+      sourceHandle: itinerary
+      target: kb
+      targetHandle: target
+      type: custom
+      zIndex: 0
+      data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: knowledge-retrieval
+    - id: classify-realtime-search
+      source: classify
+      sourceHandle: realtime
+      target: search
+      targetHandle: target
+      type: custom
+      zIndex: 0
+      data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: llm
+    - id: kb-source-llm_kb
+      source: kb
+      sourceHandle: source
+      target: llm_kb
+      targetHandle: target
+      type: custom
+      zIndex: 0
+      data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+    - id: search-source-llm_web
+      source: search
+      sourceHandle: source
+      target: llm_web
+      targetHandle: target
+      type: custom
+      zIndex: 0
+      data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+    - id: llm_kb-source-answer_kb
+      source: llm_kb
+      sourceHandle: source
+      target: answer_kb
+      targetHandle: target
+      type: custom
+      zIndex: 0
+      data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+    - id: llm_web-source-answer_web
+      source: llm_web
+      sourceHandle: source
+      target: answer_web
+      targetHandle: target
+      type: custom
+      zIndex: 0
+      data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+    nodes:
+    - data:
+        selected: false
+        title: 시작
+        type: start
+        variables: []
+      height: 73
+      id: '1794193445509'
+      position:
+        x: 80
+        y: 80
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - id: classify
+      type: custom
+      position:
+        x: 400
+        y: 80
+      data:
+        type: question-classifier
+        title: 질문 분류
+        selected: false
+        query_variable_selector:
+        - sys
+        - query
+        model:
+          provider: langgenius/openai_api_compatible/openai_api_compatible
+          name: anthropic/claude-haiku-4-5
+          mode: chat
+          completion_params:
+            temperature: 0
+        classes:
+        - id: realtime
+          name: '실시간·외부 정보: 오늘 날씨, 지금 영업 중인지, 버스·항공 실시간, 환율, 뉴스, 일정 문서에 없을 새 장소'
+        - id: itinerary
+          name: '일정·장소·식당·교통·체크리스트·임산부 주의사항: 여행 계획 문서로 답할 수 있는 질문'
+        instruction: 질문이 지금·오늘·현재·실시간·변경·지연·날씨·환율을 묻거나 일정 문서에 없을 외부 사실을 요구하면 realtime,
+          그 외는 itinerary.
+        topics: []
+        vision:
+          enabled: false
+    - id: kb
+      type: custom
+      position:
+        x: 720
+        y: 80
+      data:
+        type: knowledge-retrieval
+        title: 일정 지식베이스
+        selected: false
+        query_variable_selector:
+        - sys
+        - query
+        dataset_ids:
+        - c8033432-781c-402a-973b-01a8b069d8fa
+        retrieval_mode: multiple
+        multiple_retrieval_config:
+          top_k: 10
+          reranking_enable: false
+    - id: search
+      type: custom
+      position:
+        x: 1040
+        y: 80
+      data:
+        type: llm
+        title: 웹검색 (Perplexity sonar)
+        selected: false
+        model:
+          provider: langgenius/openai_api_compatible/openai_api_compatible
+          name: perplexity/sonar
+          mode: chat
+          completion_params:
+            temperature: 0.1
+        context:
+          enabled: false
+          variable_selector: []
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 6
+        prompt_template:
+        - role: system
+          text: '너는 웹검색 엔진이다. 사용자 질문에 대해 최신 사실을 찾아 한국어로 3~6문장으로 정리하고, 각 사실 뒤에 출처 URL을
+            괄호로 붙인다.
+
+            여행 맥락: 일본 오키나와, 2026-11-28~12-02 방문, 차탄(北谷) 레쿠 호텔 숙박. 시각은 일본 시간, 금액은 엔화로
+            쓴다. 확실하지 않으면 "확인 못 함"이라고 쓴다.'
+        vision:
+          enabled: false
+    - id: llm_kb
+      type: custom
+      position:
+        x: 80
+        y: 300
+      data:
+        type: llm
+        title: 일정 답변
+        selected: false
+        model:
+          provider: langgenius/openai_api_compatible/openai_api_compatible
+          name: anthropic/claude-haiku-4-5
+          mode: chat
+          completion_params:
+            temperature: 0.2
+        context:
+          enabled: true
+          variable_selector:
+          - kb
+          - result
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 6
+        prompt_template:
+        - role: system
+          text: '너는 오키나와 태교여행(2026-11-28~12-02, 임신 24주 부부, 레쿠 차탄 4박, 렌터카 없음)의 일정 도우미다.
+
+            아래 컨텍스트(여행 계획 문서, 각 항목 앞에 날짜·요일·시각이 적혀 있다)만 근거로. 날짜를 물으면 그 날짜 헤더가 붙은 항목만
+            시간순으로 정리하고, 한국어로 짧고 정확하게 답한다. 시간·금액·장소 이름은 문서 그대로 쓴다.
+
+            컨텍스트에 없는 내용이면 "일정 문서에는 없어요"라고 말하고 추측하지 않는다.
+
+            임산부 안전(날것·고온탕·사우나·장시간 이동)과 관련되면 문서의 주의사항을 함께 알려 준다. 이모지는 쓰지 않는다.
+
+            {{#context#}}'
+        vision:
+          enabled: false
+    - id: llm_web
+      type: custom
+      position:
+        x: 400
+        y: 300
+      data:
+        type: llm
+        title: 실시간 답변
+        selected: false
+        model:
+          provider: langgenius/openai_api_compatible/openai_api_compatible
+          name: anthropic/claude-haiku-4-5
+          mode: chat
+          completion_params:
+            temperature: 0.2
+        context:
+          enabled: false
+          variable_selector: []
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 6
+        prompt_template:
+        - role: system
+          text: '너는 오키나와 여행 도우미다. 아래 웹검색 결과를 근거로 한국어로 짧게 답하고 출처 URL을 남긴다. 검색 결과가 질문과
+            안 맞으면 모른다고 말한다. 이모지는 쓰지 않는다.
+
+            여행 맥락: 2026-11-28~12-02, 차탄 레쿠 호텔, 임신 24주, 렌터카 없음.
+
+            검색 결과:
+
+            {{#search.text#}}'
+        vision:
+          enabled: false
+    - id: answer_kb
+      type: custom
+      position:
+        x: 720
+        y: 300
+      data:
+        type: answer
+        title: 답변(일정)
+        selected: false
+        answer: '{{#llm_kb.text#}}'
+        variables: []
+    - id: answer_web
+      type: custom
+      position:
+        x: 1040
+        y: 300
+      data:
+        type: answer
+        title: 답변(실시간)
+        selected: false
+        answer: '{{#llm_web.text#}}'
+        variables: []
+    viewport:
+      x: -48.77650615417838
+      y: 20.792485424314407
+      zoom: 1.2869790541999568
+  rag_pipeline_variables: []

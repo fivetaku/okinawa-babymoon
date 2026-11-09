@@ -139,3 +139,7 @@ ul.tips li::before{content:counter(tip,decimal-leading-zero);position:absolute;l
 ul.src{padding-left:0;list-style:none;margin:0;font-size:11.5px;color:var(--muted);word-break:break-all}
 ul.src li{padding:5px 0;border-bottom:1px solid var(--line)}
 main{padding-bottom:80px}
+
+/* Dify 채팅 버블 — 흑백 */
+#dify-chatbot-bubble-button{--dify-chatbot-bubble-button-bg-color:#111;--dify-chatbot-bubble-button-bottom:20px;--dify-chatbot-bubble-button-right:20px;--dify-chatbot-bubble-button-width:48px;--dify-chatbot-bubble-button-height:48px;--dify-chatbot-bubble-button-border-radius:0;--dify-chatbot-bubble-button-box-shadow:none;--dify-chatbot-bubble-button-hover-transform:none;border:1px solid #111}
+#dify-chatbot-bubble-window{border:1px solid #111;border-radius:0;box-shadow:none}
