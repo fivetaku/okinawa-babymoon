@@ -87,91 +87,97 @@ workflow:
       voice: ''
   graph:
     edges:
-    - id: 1794193445509-source-classify
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: question-classifier
+      id: 1794193445509-source-classify
       source: '1794193445509'
       sourceHandle: source
       target: classify
       targetHandle: target
       type: custom
       zIndex: 0
-      data:
+    - data:
         isInIteration: false
         isInLoop: false
-        sourceType: start
-        targetType: question-classifier
-    - id: classify-realtime-search
+        sourceType: question-classifier
+        targetType: llm
+      id: classify-realtime-search
       source: classify
       sourceHandle: realtime
       target: search
       targetHandle: target
       type: custom
       zIndex: 0
-      data:
+    - data:
         isInIteration: false
         isInLoop: false
-        sourceType: question-classifier
+        sourceType: llm
         targetType: llm
-    - id: search-source-llm_web
+      id: search-source-llm_web
       source: search
       sourceHandle: source
       target: llm_web
       targetHandle: target
       type: custom
       zIndex: 0
-      data:
+    - data:
         isInIteration: false
         isInLoop: false
         sourceType: llm
-        targetType: llm
-    - id: llm_kb-source-answer_kb
+        targetType: answer
+      id: llm_kb-source-answer_kb
       source: llm_kb
       sourceHandle: source
       target: answer_kb
       targetHandle: target
       type: custom
       zIndex: 0
-      data:
+    - data:
         isInIteration: false
         isInLoop: false
         sourceType: llm
         targetType: answer
-    - id: llm_web-source-answer_web
+      id: llm_web-source-answer_web
       source: llm_web
       sourceHandle: source
       target: answer_web
       targetHandle: target
       type: custom
       zIndex: 0
-      data:
+    - data:
         isInIteration: false
         isInLoop: false
-        sourceType: llm
-        targetType: answer
-    - id: classify-itinerary-llm_kb
+        sourceType: question-classifier
+        targetType: llm
+      id: classify-itinerary-llm_kb
       source: classify
       sourceHandle: itinerary
       target: llm_kb
       targetHandle: target
       type: custom
       zIndex: 0
-      data:
-        isInIteration: false
-        isInLoop: false
-        sourceType: question-classifier
-        targetType: llm
     nodes:
     - data:
         selected: false
         title: 시작
         type: start
         variables:
-        - variable: today
+        - allowed_file_extensions: []
+          allowed_file_types: []
+          allowed_file_upload_methods: []
+          default: ''
+          description: ''
+          hide: false
+          json_schema: null
           label: 오늘 날짜
-          type: text-input
-          required: false
           max_length: 48
           options: []
-          default: ''
+          required: false
+          type: text-input
+          variable: today
       height: 73
       id: '1794193445509'
       position:
@@ -186,49 +192,42 @@ workflow:
       type: custom
       width: 242
       zIndex: 0
-    - id: classify
-      type: custom
-      position:
-        x: 400
-        y: 80
-      data:
-        type: question-classifier
-        title: 질문 분류
-        selected: false
-        query_variable_selector:
-        - sys
-        - query
-        model:
-          provider: langgenius/openai_api_compatible/openai_api_compatible
-          name: anthropic/claude-haiku-4-5
-          mode: chat
-          completion_params:
-            temperature: 0
+    - data:
         classes:
         - id: realtime
+          label: ''
           name: '실시간·외부 정보: 오늘 날씨, 지금 영업 중인지, 버스·항공 실시간, 환율, 뉴스, 일정 문서에 없을 새 장소'
         - id: itinerary
+          label: ''
           name: '일정·장소·식당·교통·체크리스트·임산부 주의사항: 여행 계획 문서로 답할 수 있는 질문'
         instruction: '''오늘·내일·지금 일정''처럼 일정표에 있는 내용은 itinerary다. realtime은 날씨·실시간 운행·환율·영업
           여부·최신 뉴스처럼 일정 문서 밖의 지금 사실을 물을 때만.'
-        topics: []
-        vision:
-          enabled: false
-    - id: search
-      type: custom
-      position:
-        x: 1040
-        y: 80
-      data:
-        type: llm
-        title: 웹검색 (Perplexity sonar)
-        selected: false
         model:
-          provider: langgenius/openai_api_compatible/openai_api_compatible
-          name: perplexity/sonar
-          mode: chat
           completion_params:
-            temperature: 0.1
+            temperature: 0
+          mode: chat
+          name: anthropic/claude-sonnet-5
+          provider: langgenius/openai_api_compatible/openai_api_compatible
+        query_variable_selector:
+        - sys
+        - query
+        selected: false
+        title: 질문 분류
+        topics: []
+        type: question-classifier
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - sys
+            - files
+          enabled: false
+      id: classify
+      position:
+        x: 400
+        y: 80
+      type: custom
+    - data:
         context:
           enabled: false
           variable_selector: []
@@ -240,6 +239,12 @@ workflow:
           window:
             enabled: true
             size: 6
+        model:
+          completion_params:
+            temperature: 0.1
+          mode: chat
+          name: perplexity/sonar
+          provider: langgenius/openai_api_compatible/openai_api_compatible
         prompt_template:
         - role: system
           text: '너는 웹검색 엔진이다. 사용자 질문에 대해 최신 사실을 찾아 한국어로 3~6문장으로 정리하고, 각 사실 뒤에 출처 URL을
@@ -247,23 +252,22 @@ workflow:
 
             여행 맥락: 일본 오키나와, 2026-11-28~12-02 방문, 차탄(北谷) 레쿠 호텔 숙박. 시각은 일본 시간, 금액은 엔화로
             쓴다. 확실하지 않으면 "확인 못 함"이라고 쓴다.'
-        vision:
-          enabled: false
-    - id: llm_kb
-      type: custom
-      position:
-        x: 80
-        y: 300
-      data:
-        type: llm
-        title: 일정 답변
         selected: false
-        model:
-          provider: langgenius/openai_api_compatible/openai_api_compatible
-          name: anthropic/claude-haiku-4-5
-          mode: chat
-          completion_params:
-            temperature: 0.2
+        title: 웹검색 (Perplexity sonar)
+        type: llm
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - sys
+            - files
+          enabled: false
+      id: search
+      position:
+        x: 1040
+        y: 80
+      type: custom
+    - data:
         context:
           enabled: false
           variable_selector: []
@@ -275,6 +279,12 @@ workflow:
           window:
             enabled: true
             size: 6
+        model:
+          completion_params:
+            temperature: 0.2
+          mode: chat
+          name: anthropic/claude-sonnet-5
+          provider: langgenius/openai_api_compatible/openai_api_compatible
         prompt_template:
         - role: system
           text: '오늘 날짜(일본 시각, 페이지가 전달): {{#1794193445509.today#}} . 비어 있으면 ''오늘이 며칠인지
@@ -934,23 +944,22 @@ workflow:
 
 
             === 문서 끝 ==='
-        vision:
-          enabled: false
-    - id: llm_web
-      type: custom
-      position:
-        x: 400
-        y: 300
-      data:
-        type: llm
-        title: 실시간 답변
         selected: false
-        model:
-          provider: langgenius/openai_api_compatible/openai_api_compatible
-          name: anthropic/claude-haiku-4-5
-          mode: chat
-          completion_params:
-            temperature: 0.2
+        title: 일정 답변
+        type: llm
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - sys
+            - files
+          enabled: false
+      id: llm_kb
+      position:
+        x: 80
+        y: 300
+      type: custom
+    - data:
         context:
           enabled: false
           variable_selector: []
@@ -962,6 +971,12 @@ workflow:
           window:
             enabled: true
             size: 6
+        model:
+          completion_params:
+            temperature: 0.2
+          mode: chat
+          name: anthropic/claude-sonnet-5
+          provider: langgenius/openai_api_compatible/openai_api_compatible
         prompt_template:
         - role: system
           text: '너는 오키나와 여행 도우미다. 아래 웹검색 결과를 근거로 한국어로 짧게 답하고 출처 URL을 남긴다. 검색 결과가 질문과
@@ -972,32 +987,41 @@ workflow:
             검색 결과:
 
             {{#search.text#}}'
+        selected: false
+        title: 실시간 답변
+        type: llm
         vision:
+          configs:
+            detail: high
+            variable_selector:
+            - sys
+            - files
           enabled: false
-    - id: answer_kb
+      id: llm_web
+      position:
+        x: 400
+        y: 300
       type: custom
+    - data:
+        answer: '{{#llm_kb.text#}}'
+        selected: false
+        title: 답변(일정)
+        type: answer
+        variables: []
+      id: answer_kb
       position:
         x: 720
         y: 300
-      data:
-        type: answer
-        title: 답변(일정)
-        selected: false
-        answer: '{{#llm_kb.text#}}'
-        variables: []
-    - id: answer_web
       type: custom
+    - data:
+        answer: '{{#llm_web.text#}}'
+        selected: false
+        title: 답변(실시간)
+        type: answer
+        variables: []
+      id: answer_web
       position:
         x: 1040
         y: 300
-      data:
-        type: answer
-        title: 답변(실시간)
-        selected: false
-        answer: '{{#llm_web.text#}}'
-        variables: []
-    viewport:
-      x: -48.77650615417838
-      y: 20.792485424314407
-      zoom: 1.2869790541999568
+      type: custom
   rag_pipeline_variables: []
