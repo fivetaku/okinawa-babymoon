@@ -206,7 +206,7 @@ workflow:
           completion_params:
             temperature: 0
           mode: chat
-          name: anthropic/claude-sonnet-5
+          name: opencodex/teamclaude/claude-sonnet-5-5
           provider: langgenius/openai_api_compatible/openai_api_compatible
         query_variable_selector:
         - sys
@@ -283,7 +283,7 @@ workflow:
           completion_params:
             temperature: 0.2
           mode: chat
-          name: anthropic/claude-sonnet-5
+          name: opencodex/teamclaude/claude-sonnet-5-5
           provider: langgenius/openai_api_compatible/openai_api_compatible
         prompt_template:
         - role: system
@@ -975,7 +975,7 @@ workflow:
           completion_params:
             temperature: 0.2
           mode: chat
-          name: anthropic/claude-sonnet-5
+          name: opencodex/teamclaude/claude-sonnet-5-5
           provider: langgenius/openai_api_compatible/openai_api_compatible
         prompt_template:
         - role: system
