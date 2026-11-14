@@ -31,7 +31,7 @@ a{color:inherit;text-decoration:none}
 .index{margin:0;padding:0;list-style:none}
 .index li{display:grid;grid-template-columns:88px 1fr;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
 .index li b{font-weight:500;color:var(--muted);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
-.quick{display:grid;grid-template-columns:repeat(4,1fr);border:var(--rule-h) solid var(--line2);margin:22px 0 0}
+.quick{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:var(--rule-h) solid var(--line2);margin:22px 0 0}
 .quick a{padding:12px 4px;text-align:center;font-size:12px;letter-spacing:.06em;text-transform:uppercase;border-right:1px solid var(--line2)}
 .quick a:last-child{border-right:0}
 .quick a:active{background:var(--ink);color:#fff}
@@ -96,6 +96,31 @@ li.stop.done .what,li.stop.done .how{color:#aaa;text-decoration:line-through}
 .nowbar{max-width:720px;margin:0 auto;padding:9px 20px;background:var(--ink);color:#fff;display:flex;justify-content:space-between;align-items:baseline;font-size:13px;cursor:pointer}
 .nowbar>div{min-width:0}.nowbar b{font-size:14px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.nowbar .nx{color:#bbb;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.nowbar .clock{flex:none;margin-left:12px;white-space:nowrap;font-variant-numeric:tabular-nums;color:#ddd}
 ul.ck .chip{margin-top:8px}
+ul.ck li.fixed{opacity:.6}
+
+/* shopping */
+.shop{padding:0 0 22px;margin-bottom:22px;border-bottom:var(--rule-h) solid var(--line2);scroll-margin-top:calc(var(--barh,46px) + 14px)}
+.shop:last-child{border-bottom:0;margin-bottom:0}
+.shop-h .when{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;display:flex;justify-content:space-between}
+.shop-h .cnt{font-variant-numeric:tabular-nums;color:var(--ink)}
+.shop-h h3{margin:2px 0 6px;font-size:19px;letter-spacing:-.02em;font-weight:700}
+.shop-h .note{margin:0 0 4px;font-size:13px;color:var(--ink2)}
+.shop-h .chips{margin:6px 0 4px}
+button.chip{background:#fff;font-family:inherit;cursor:pointer}
+ul.sl{list-style:none;margin:0;padding:0}
+ul.sl li{display:grid;grid-template-columns:26px 1fr;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);align-items:start}
+ul.sl li:last-child{border-bottom:0}
+ul.sl input{width:18px;height:18px;margin:3px 0 0;accent-color:#111}
+ul.sl .w{font-weight:600;font-size:14.5px;line-height:1.4}
+ul.sl .star{font-size:11px;letter-spacing:.05em;margin-right:6px;font-weight:500}
+ul.sl .at{font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.04em;margin-right:6px;border:1px solid var(--line);padding:1px 5px}
+ul.sl .pr{font-size:13px;margin-top:2px;font-variant-numeric:tabular-nums}
+ul.sl .h{font-size:12.5px;color:var(--ink2);margin-top:2px}
+ul.sl li.done .w,ul.sl li.done .pr{text-decoration:line-through;color:var(--muted)}
+ul.sl li.skip .w,ul.sl li.skip .pr,ul.sl li.skip .h{color:#9a9a9a}
+ul.sl .no{font-size:10px;letter-spacing:.06em;border:1px solid #bbb;color:#9a9a9a;text-align:center;padding:2px 0;margin-top:2px}
+.gifts div{display:grid;gap:2px}
+.gifts .g1{color:var(--ink);font-weight:600}.gifts .g2{font-size:12.5px}.gifts .g3{font-size:11.5px;color:var(--muted)}
 
 /* map */
 #map{height:280px;border:var(--rule) solid var(--line2);z-index:0;background:#f7f7f7;filter:grayscale(1)}

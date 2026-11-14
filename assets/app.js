@@ -70,6 +70,7 @@
         if (s.p && prev) chips.push(`<a class="chip" target="_blank" rel="noopener" href="${dirUrl(place(prev.p), place(s.p), mode)}">${esc(place(prev.p).name.split(" (")[0])}에서</a>`);
         if (s.p) chips.push(`<a class="chip" target="_blank" rel="noopener" href="${gmap(place(s.p))}">지도</a>`);
         if (pi && pi.tel) chips.push(`<a class="chip" href="tel:${esc(pi.tel.replace(/-/g, ""))}">${esc(pi.tel)}</a>`);
+        if (s.shop) chips.push(`<a class="chip" href="#shop-${esc(s.shop)}">쇼핑 목록</a>`);
         const leg = s.p && prev ? `<li class="leg">${modeKo[mode]}${s.leg ? " · " + esc(s.leg) : ""}</li>` : "";
         const key = `${i}-${k}`;
         return `${leg}<li class="stop${now ? " now" : ""}${doneStops.has(key) ? " done" : ""}" data-k="${k}" data-p="${s.p || ""}"><span class="t">${esc(s.t)}<small></small></span><div>
@@ -160,13 +161,39 @@
 
   const KEY = "okinawa-ck";
   const done = new Set(JSON.parse(localStorage.getItem(KEY) || "[]"));
+  (T.checklist || []).forEach(c => { if (c.done) done.add(c.id); });
   $("ck").innerHTML = (T.checklist || []).map(c => `
-    <li class="${done.has(c.id) ? "done" : ""}"><input type="checkbox" id="ck-${c.id}" ${done.has(c.id) ? "checked" : ""}>
+    <li class="${done.has(c.id) ? "done" : ""}${c.done ? " fixed" : ""}"><input type="checkbox" id="ck-${c.id}" ${done.has(c.id) ? "checked" : ""}${c.done ? " disabled" : ""}>
       <label for="ck-${c.id}"><div class="when">${esc(c.when)}</div><div class="w">${esc(c.what)}</div><div class="h">${yen(c.how || "")}</div>${c.url ? `<a class="chip${c.url.startsWith("tel:") ? "" : " ext"}" target="${c.url.startsWith("tel:") ? "_self" : "_blank"}" rel="noopener" href="${esc(c.url)}">${esc(c.link || "링크")}</a>` : ""}</label></li>`).join("");
   $("ck").querySelectorAll("input").forEach(inp => inp.onchange = () => {
     const id = inp.id.slice(3); inp.checked ? done.add(id) : done.delete(id);
     localStorage.setItem(KEY, JSON.stringify([...done])); inp.closest("li").classList.toggle("done", inp.checked);
   });
+
+  // 쇼핑: 장소별 묶음. 산 것은 체크해 이 기기에 저장, 안 살 것은 회색으로 남겨 현장에서 헷갈리지 않게 한다
+  const SK = "okinawa-shop"; const bought = new Set(JSON.parse(localStorage.getItem(SK) || "[]"));
+  const dayOf = g => T.days.findIndex(d => d.stops.some(s => s.shop === g.id));
+  const sprog = g => { const items = g.items.filter(x => !x.skip); const c = items.filter(x => bought.has(`${g.id}-${x.id}`)).length;
+    const el = $("sp-" + g.id); if (el) el.textContent = items.length ? `${c} / ${items.length}` : ""; };
+  if ($("shop")) {
+    $("shop").innerHTML = (T.shopping || []).map(g => { const di = dayOf(g); return `
+    <div class="shop" id="shop-${esc(g.id)}">
+      <div class="shop-h"><div class="when">${esc(g.when)}<span class="cnt" id="sp-${esc(g.id)}"></span></div><h3>${esc(g.where)}</h3>
+        ${g.note ? `<p class="note">${yen(g.note)}</p>` : ""}
+        <div class="chips">${di >= 0 ? `<button class="chip goday" data-d="${di}">일정으로</button>` : ""}${g.p && place(g.p) ? `<a class="chip" target="_blank" rel="noopener" href="${gmap(place(g.p))}">지도</a>` : ""}</div></div>
+      <ul class="sl">${g.items.map(x => { const k = `${g.id}-${x.id}`; return `
+        <li class="${x.skip ? "skip" : ""}${bought.has(k) ? " done" : ""}">${x.skip ? `<span class="no">안 삼</span>` : `<input type="checkbox" id="sh-${esc(k)}" data-k="${esc(k)}" ${bought.has(k) ? "checked" : ""}>`}
+          <label for="sh-${esc(k)}"><div class="w">${x.star ? `<span class="star">${"★".repeat(x.star)}</span>` : ""}${x.at ? `<span class="at">${esc(x.at)}</span>` : ""}${esc(x.what)}</div>
+          ${x.price ? `<div class="pr">${yen(x.price)}</div>` : ""}${x.memo ? `<div class="h">${yen(x.memo)}</div>` : ""}</label></li>`; }).join("")}
+      </ul></div>`; }).join("") + ((T.gifts || []).length ? `
+    <div class="shop" id="shop-gifts"><div class="shop-h"><div class="when">선물 정리</div><h3>누구에게 무엇을</h3></div>
+      <div class="kv gifts">${T.gifts.map(r => `<div><b>${esc(r[0])}</b><span class="g1">${yen(r[1])}</span>${r[2] ? `<span class="g2">대안 · ${yen(r[2])}</span>` : ""}<span class="g3">${esc(r[3])}</span></div>`).join("")}</div></div>` : "");
+    (T.shopping || []).forEach(sprog);
+    $("shop").querySelectorAll("input").forEach(inp => inp.onchange = () => { const k = inp.dataset.k;
+      inp.checked ? bought.add(k) : bought.delete(k); localStorage.setItem(SK, JSON.stringify([...bought]));
+      inp.closest("li").classList.toggle("done", inp.checked); sprog(T.shopping.find(g => k.startsWith(g.id + "-"))); });
+    $("shop").querySelectorAll(".goday").forEach(b => b.onclick = () => select(+b.dataset.d, true));
+  }
 
   $("em").innerHTML = (T.emergency || []).map(([k, v]) => {
     const jp = /[぀-ヿ一-鿿]/.test(v) ? v.split(/\s*\(/)[0] : null;
