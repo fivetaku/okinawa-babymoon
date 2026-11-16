@@ -24,7 +24,8 @@
   const refreshKrw = () => document.querySelectorAll(".yen").forEach(el => el.querySelector("small").textContent = krw(+el.dataset.y));
   if (!fx.at || Date.now() - fx.at > 864e5) fetch("https://open.er-api.com/v6/latest/JPY").then(r => r.json()).then(j => {
     if (j && j.rates && j.rates.KRW) { rate = j.rates.KRW; localStorage.setItem(RK, JSON.stringify({ rate, at: Date.now() })); refreshKrw(); } }).catch(() => {});
-  const DK = "okinawa-done"; const doneStops = new Set(JSON.parse(localStorage.getItem(DK) || "[]"));
+  const DK = "okinawa-done"; const doneStops = new Set(JSON.parse(localStorage.getItem(DK) || "[]").filter(k => k.includes("@")));
+  const stopKey = (i, k) => `${T.days[i].label.split(" ")[0]}@${T.days[i].stops[k].t}`;
   const pin = (n, cls) => L.divIcon({ className: "", iconSize: [22, 22], iconAnchor: [11, 11], html: `<div class="pin${cls ? " " + cls : ""}">${n}</div>` });
 
   $("lead").textContent = T.lead;
@@ -72,9 +73,9 @@
         if (pi && pi.tel) chips.push(`<a class="chip" href="tel:${esc(pi.tel.replace(/-/g, ""))}">${esc(pi.tel)}</a>`);
         if (s.shop) chips.push(`<a class="chip" href="#shop-${esc(s.shop)}">쇼핑 목록</a>`);
         const leg = s.p && prev ? `<li class="leg">${modeKo[mode]}${s.leg ? " · " + esc(s.leg) : ""}</li>` : "";
-        const key = `${i}-${k}`;
+        const key = stopKey(i, k);
         return `${leg}<li class="stop${now ? " now" : ""}${doneStops.has(key) ? " done" : ""}" data-k="${k}" data-p="${s.p || ""}"><span class="t">${esc(s.t)}<small></small></span><div>
-          <div class="wrow"><button class="tick" data-key="${key}" aria-label="완료"></button><div class="what">${yen(s.what)}</div></div>
+          <div class="wrow"><button class="tick" data-key="${key}" data-i="${i}" aria-label="완료"></button><div class="what">${yen(s.what)}</div></div>
           ${s.how ? `<div class="how">${yen(s.how)}</div>` : ""}
           ${pi ? `<div class="pinfo">${pi.hours ? `<span><b>Hours</b>${esc(pi.hours)}</span>` : ""}${pi.addr ? `<span><b>Addr</b>${esc(pi.addr)}</span>` : ""}${pi.note ? `<span><b>Note</b>${yen(pi.note)}</span>` : ""}</div>` : ""}
           ${chips.length ? `<div class="chips">${chips.join("")}</div>` : ""}</div></li>`; }).join("")}
@@ -82,12 +83,12 @@
   }).join("");
 
   // D: 끝낸 항목 체크 → 흐리게 + 날짜별 진행률
-  const prog = i => { const n = T.days[i].stops.length; const c = T.days[i].stops.filter((_, k) => doneStops.has(`${i}-${k}`)).length;
+  const prog = i => { const n = T.days[i].stops.length; const c = T.days[i].stops.filter((_, k) => doneStops.has(stopKey(i, k))).length;
     const el = $("prog" + i); if (el) el.firstElementChild.style.width = (c / n * 100) + "%"; };
   T.days.forEach((_, i) => prog(i));
   document.querySelectorAll(".tick").forEach(b => b.onclick = e => { e.stopPropagation(); const key = b.dataset.key;
     doneStops.has(key) ? doneStops.delete(key) : doneStops.add(key); localStorage.setItem(DK, JSON.stringify([...doneStops]));
-    b.closest("li").classList.toggle("done", doneStops.has(key)); prog(+key.split("-")[0]); });
+    b.closest("li").classList.toggle("done", doneStops.has(key)); prog(+b.dataset.i); push("stop", key, doneStops.has(key)); });
 
   const map = L.map("map", { scrollWheelZoom: false, tap: true });
   L.tileLayer(TILE, TILE_OPT).addTo(map);
@@ -167,7 +168,7 @@
       <label for="ck-${c.id}"><div class="when">${esc(c.when)}</div><div class="w">${esc(c.what)}</div><div class="h">${yen(c.how || "")}</div>${c.url ? `<a class="chip${c.url.startsWith("tel:") ? "" : " ext"}" target="${c.url.startsWith("tel:") ? "_self" : "_blank"}" rel="noopener" href="${esc(c.url)}">${esc(c.link || "링크")}</a>` : ""}</label></li>`).join("");
   $("ck").querySelectorAll("input").forEach(inp => inp.onchange = () => {
     const id = inp.id.slice(3); inp.checked ? done.add(id) : done.delete(id);
-    localStorage.setItem(KEY, JSON.stringify([...done])); inp.closest("li").classList.toggle("done", inp.checked);
+    localStorage.setItem(KEY, JSON.stringify([...done])); inp.closest("li").classList.toggle("done", inp.checked); push("ck", id, inp.checked);
   });
 
   // 쇼핑: 장소별 묶음. 산 것은 체크해 이 기기에 저장, 안 살 것은 회색으로 남겨 현장에서 헷갈리지 않게 한다
@@ -191,7 +192,7 @@
     (T.shopping || []).forEach(sprog);
     $("shop").querySelectorAll("input").forEach(inp => inp.onchange = () => { const k = inp.dataset.k;
       inp.checked ? bought.add(k) : bought.delete(k); localStorage.setItem(SK, JSON.stringify([...bought]));
-      inp.closest("li").classList.toggle("done", inp.checked); sprog(T.shopping.find(g => k.startsWith(g.id + "-"))); });
+      inp.closest("li").classList.toggle("done", inp.checked); sprog(T.shopping.find(g => k.startsWith(g.id + "-"))); push("shop", k, inp.checked); });
     $("shop").querySelectorAll(".goday").forEach(b => b.onclick = () => select(+b.dataset.d, true));
   }
 
@@ -203,4 +204,44 @@
 
   $("tips").innerHTML = T.tips.map(t => `<li>${yen(t)}</li>`).join("");
   $("src").innerHTML = (T.sources || []).map(u => `<li><a target="_blank" rel="noopener" href="${esc(u)}">${esc(u)}</a></li>`).join("");
+
+  // 체크 공유: 일정·체크리스트·쇼핑 체크를 서버(T.sync)에 두어 두 사람 폰이 같은 상태를 본다.
+  // 화면은 기기 저장값으로 먼저 그리고, 서버 값을 받아 덮는다. 못 보낸 체크는 기기에 모아 두었다가 다시 보낸다.
+  const QK = "okinawa-sync-q", MK = "okinawa-sync-mig1";
+  const sets = { stop: doneStops, ck: done, shop: bought }, lsk = { stop: DK, ck: KEY, shop: SK };
+  let queue = (() => { try { return JSON.parse(localStorage.getItem(QK)) || []; } catch { return []; } })();
+  const saveQ = () => localStorage.setItem(QK, JSON.stringify(queue));
+  function push(list, key, on) { if (!T.sync) return; queue = queue.filter(o => !(o.list === list && o.key === key)); queue.push({ list, key, on }); saveQ(); sync(); }
+  function paint() {
+    document.querySelectorAll(".tick").forEach(b => b.closest("li").classList.toggle("done", doneStops.has(b.dataset.key)));
+    T.days.forEach((_, i) => prog(i));
+    document.querySelectorAll("#ck input").forEach(inp => { const on = done.has(inp.id.slice(3)); inp.checked = on; inp.closest("li").classList.toggle("done", on); });
+    document.querySelectorAll("#shop input[data-k]").forEach(inp => { const on = bought.has(inp.dataset.k); inp.checked = on; inp.closest("li").classList.toggle("done", on); });
+    (T.shopping || []).forEach(sprog);
+  }
+  function apply(st) {
+    for (const l of ["stop", "ck", "shop"]) { const s = sets[l]; s.clear(); (st[l] || []).forEach(k => s.add(k)); }
+    (T.checklist || []).forEach(c => { if (c.done) done.add(c.id); });
+    queue.forEach(o => o.on ? sets[o.list].add(o.key) : sets[o.list].delete(o.key));
+    for (const l in sets) localStorage.setItem(lsk[l], JSON.stringify([...sets[l]]));
+    paint();
+  }
+  let busy = false, again = false;
+  async function sync() {
+    if (!T.sync) return; if (busy) { again = true; return; } busy = true; again = false;
+    try {
+      if (!localStorage.getItem(MK)) { const fixed = new Set((T.checklist || []).filter(c => c.done).map(c => c.id));
+        for (const l in sets) sets[l].forEach(k => { if (!(l === "ck" && fixed.has(k)) && !queue.some(o => o.list === l && o.key === k)) queue.push({ list: l, key: k, on: true }); }); saveQ(); }
+      let st;
+      if (queue.length) { const sent = queue.slice(0, 200);
+        const r = await fetch(T.sync, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ops: sent }) });
+        if (!r.ok) throw new Error(r.status); st = await r.json(); queue = queue.filter(o => !sent.includes(o)); saveQ();
+      } else { const r = await fetch(T.sync, { cache: "no-store" }); if (!r.ok) throw new Error(r.status); st = await r.json(); }
+      localStorage.setItem(MK, "1"); apply(st);
+    } catch (e) { /* 오프라인이면 다음 기회에 */ } finally { busy = false; }
+    if (again) sync(); else if (queue.length && navigator.onLine) setTimeout(sync, 5000);
+  }
+  if (T.sync) { sync(); setInterval(() => { if (document.visibilityState === "visible") sync(); }, 15e3);
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") sync(); });
+    window.addEventListener("online", sync); }
 })();

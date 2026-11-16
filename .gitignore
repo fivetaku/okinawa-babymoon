@@ -1,2 +1,4 @@
-.imagen/
 .DS_Store
+.imagen/
+.wrangler/
+node_modules/

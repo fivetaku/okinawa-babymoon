@@ -1,4 +1,5 @@
 window.TRIP = {
+  sync: "https://okinawa-babymoon-sync.gptaku-ai.workers.dev/state",
   lead: "매년 유럽을 바쁘게 걸었던 우리가 처음으로 아무것도 서두르지 않는 여행을 떠납니다. 셋이 되기 전 둘이서, 차탄 바닷가에 머물며 느리게 쉬어 가는 4박 5일.",
   facts: [
     ["항공", "11/28(토) 제주항공 15:50 나하 도착 · 12/2(수) 진에어 13:35 나하 출발"],
