@@ -42,7 +42,7 @@
 - 바꾸기: `POST` 같은 주소, `Content-Type: application/json`, 본문 `{"ops":[{"list":"ck","key":"vjw","on":true}]}`
   - `on:false`면 체크 해제. 여러 개를 한 번에 보낼 수 있다.
 - id는 일정 정본에 나오는 것만 쓴다. 모르면 바꾸기 전에 어느 항목인지 되묻는다.
-- 체크리스트 id: deadline, vjw, didi, esim-install, cash, capture, pack, ashisale, jinair, limo, shimanchu, bus95, taxfree.
+- 체크리스트 id: deadline, vjw, didi, docs, esim-install, cash, capture, pack, ashisale, jinair, limo, shimanchu, bus95, taxfree.
 - 짐 싸기 묶음 id는 `packing`, 품목은 passport, momdocs, dfsvoucher, cards, adapter, charger, meds, stocking, maternity, summer, swim, sun, bag.
 
 ## 출발 전 준비 메모 (2026-11-25 조사, 공식 안내 기준)
