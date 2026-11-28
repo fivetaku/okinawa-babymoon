@@ -5,9 +5,11 @@
   const gmap = p => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.q || p.name)}`;
   const place = id => T.places[id];
   const info = id => (T.placeInfo || {})[id];
-  const dirUrl = (a, b, mode) => `https://www.google.com/maps/dir/?api=1&origin=${a.lat},${a.lng}&destination=${b.lat},${b.lng}&travelmode=${mode}`;
+  // 길안내는 좌표가 아니라 구글 지도 장소 검색어(q)로 연다. 좌표는 페이지 안 지도 핀에만 쓴다.
+  const gq = p => encodeURIComponent(p.q || p.name);
+  const dirUrl = (a, b, mode) => `https://www.google.com/maps/dir/?api=1&origin=${gq(a)}&destination=${gq(b)}&travelmode=${mode}`;
   // origin 생략 = 구글맵이 현재 위치(GPS)를 출발지로 씀
-  const hereUrl = (b, mode) => `https://www.google.com/maps/dir/?api=1&destination=${b.lat},${b.lng}&travelmode=${mode}`;
+  const hereUrl = (b, mode) => `https://www.google.com/maps/dir/?api=1&destination=${gq(b)}&travelmode=${mode}`;
   const routeUrl = pts => { const u = [...new Map(pts.map(p => [p.q || p.name, p])).values()];
     return `https://www.google.com/maps/dir/${u.map(p => encodeURIComponent(p.q || p.name)).join("/")}`; };
   const modeOf = how => /택시|taxi/i.test(how || "") ? "driving" : /도보|걸어서/.test(how || "") ? "walking" : "transit";

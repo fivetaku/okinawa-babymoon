@@ -8,9 +8,10 @@ window.TRIP = {
     ["가장 긴 날", "12/1(화) 지노투어 북부, 아메리칸빌리지 09:30 출발 17:30 복귀"]
   ],
   places: {
-    oka:   { name: "나하공항", q: "Naha Airport", lat: 26.1967, lng: 127.6490 },
-    gateway: { name: "차탄 게이트웨이 (TK05 정류장, 이온 차탄점 옆)", q: "Chatan Gateway bus stop Mihama", lat: 26.3147, lng: 127.7571 },
+    oka:   { name: "나하공항", q: "Naha Airport", lat: 26.2087, lng: 127.6507 },
+    gateway: { name: "차탄 게이트웨이 (TK05 정류장, 이온 차탄점 옆)", q: "北谷ゲートウェイ バス停", lat: 26.3142, lng: 127.7583 },
     hotel: { name: "레쿠 오키나와 차탄 스파&리조트", q: "Lequ Okinawa Chatan Spa & Resort", lat: 26.3176, lng: 127.7551 },
+    bos: { name: "Blue Ocean Steak (미하마 51-2 2층)", q: "BLUE OCEAN STEAK Chatan", lat: 26.3202, lng: 127.7537 },
     av: { name: "아메리칸빌리지", q: "American Village Chatan", lat: 26.3166, lng: 127.7573 },
     tic: { name: "차탄 관광정보센터 (투어 집결)", q: "Chatan Tourist Information Center", lat: 26.3159, lng: 127.7577 },
     sunset: { name: "선셋비치", q: "Sunset Beach Chatan", lat: 26.3132, lng: 127.7551 },
@@ -20,11 +21,11 @@ window.TRIP = {
     ashibinaa: { name: "아시비나 아울렛", q: "Okinawa Outlet Mall Ashibinaa", lat: 26.1589, lng: 127.6571 },
     makishi: { name: "유이레일 마키시역 (코인로커)", q: "Makishi Station Naha", lat: 26.2172, lng: 127.6926 },
     kokusai: { name: "국제거리", q: "Kokusai Dori Naha", lat: 26.2158, lng: 127.6859 },
-    donki: { name: "돈키호테 국제거리점", q: "Don Quijote Kokusai Dori Naha", lat: 26.2151, lng: 127.6840 },
+    donki: { name: "돈키호테 국제거리점", q: "Don Quijote Kokusai Dori Naha", lat: 26.2159, lng: 127.6878 },
     manzamo: { name: "만좌모", q: "Cape Manzamo", lat: 26.5050, lng: 127.8503 },
     churaumi: { name: "츄라우미 수족관", q: "Okinawa Churaumi Aquarium", lat: 26.6944, lng: 127.8780 },
-    okichan: { name: "오키짱 극장 (돌고래쇼)", q: "Okichan Theater Ocean Expo Park", lat: 26.6953, lng: 127.8770 },
-    kouri: { name: "코우리대교", q: "Kouri Bridge", lat: 26.7043, lng: 128.0181 }
+    okichan: { name: "오키짱 극장 (돌고래쇼)", q: "Okichan Theater Ocean Expo Park", lat: 26.6928, lng: 127.8758 },
+    kouri: { name: "코우리대교", q: "Kouri Bridge", lat: 26.6872, lng: 128.0182 }
   },
   days: [
     { label: "11/28 토", booking: { label: "Blue Ocean 예약 확인", url: "https://www.tablecheck.com/ja/shops/steak-okinawa/reserve" }, icon: "images/2026-11-08/day1-line-01.png", title: "도착하고 차탄으로", level: "가벼움",
@@ -35,7 +36,7 @@ window.TRIP = {
         { t: "15:50", what: "나하공항 도착 → 짐 수령 (약 16:40)", p: "oka", how: "국내선 1층 도착로비 포타마(포크타마고 오니기리)로 요기 가능" },
         { t: "17:15", what: "TK05 차탄 직행셔틀 (새 ⑤번 승강장, 1인 1,000엔, 예약 불요·차내 결제)", p: "oka", how: "국제거리 입구 경유, 차탄 게이트웨이 18:25 도착. 현금·카드 터치결제. 택시면 약 40분 5,000~6,000엔, 17:20 호텔 도착" },
         { t: "18:25", what: "차탄 게이트웨이 하차 → 걸어서 7분 레쿠 체크인", p: "gateway", how: "프런트에서 ① 공항 리무진 승차권 2장(12/2 102편, 1인 1,000엔, 차내 현금 결제 불가) ② 시만추 12/1 저녁 2명 예약 부탁(같은 건물 2F) ③ 고층·조용한 방 요청 ④ 온수풀 요금·조식 시간 확인" },
-        { t: "19:30", what: "저녁: Blue Ocean Steak (예약 완료, 메시지 플레이트 신청)", p: "av", how: "미하마 51-2 2층, 걸어서 5분. 서비스료 1인 385엔. 고시히카리 밥은 무료라 0엔으로 주문, 식후 미니 디저트는 직원에게 말하기. 스테이크는 웰던" },
+        { t: "19:30", what: "저녁: Blue Ocean Steak (예약 완료, 메시지 플레이트 신청)", p: "bos", how: "미하마 51-2 2층, 걸어서 5분. 서비스료 1인 385엔. 고시히카리 밥은 무료라 0엔으로 주문, 식후 미니 디저트는 직원에게 말하기. 스테이크는 웰던" },
         { t: "20:30", what: "아메리칸빌리지 야경 산책, 블루씰", p: "av", how: "데포아일랜드 블루씰 21시까지" }
       ] },
     { label: "11/29 일", icon: "images/2026-11-08/day2-line-01.png", title: "리조트 휴식 + 라이카무 + 아카짱혼포", level: "가벼움",
@@ -92,8 +93,8 @@ window.TRIP = {
       tags: ["확정", "온천 무료", "온수풀 유료", "리무진 정차"] }
   ],
   food: [
-    { name: "Blue Ocean Steak 차탄", q: "BLUE OCEAN STEAK Chatan", lat: 26.3169, lng: 127.7569, sub: "아메빌 · 스테이크 · 11/28 저녁", desc: "4.8 / 약 3,400 리뷰. 16:30~23:00 연중무휴. TableCheck 예약, 창가는 요청만. 웰던.", tags: ["예약 필수", "걸어서 5분"] },
-    { name: "지구촌 이자카야", q: "Earth Village Izakaya Chatan", lat: 26.3169, lng: 127.7569, sub: "아메빌 · 오키나와 요리 · 11/28 예비", desc: "4.6 / 약 320. 17:30~03:00. 고야참푸루·시마두부·테비치, 무알코올 확인.", tags: ["걸어서 5분"] },
+    { name: "Blue Ocean Steak 차탄", q: "BLUE OCEAN STEAK Chatan", lat: 26.3202, lng: 127.7537, sub: "아메빌 · 스테이크 · 11/28 저녁", desc: "4.8 / 약 3,400 리뷰. 16:30~23:00 연중무휴. TableCheck 예약, 창가는 요청만. 웰던.", tags: ["예약 필수", "걸어서 5분"] },
+    { name: "지구촌 이자카야", q: "Earth Village Izakaya Chatan", lat: 26.3203, lng: 127.7537, sub: "아메빌 · 오키나와 요리 · 11/28 예비", desc: "4.6 / 약 320. 17:30~03:00. 고야참푸루·시마두부·테비치, 무알코올 확인.", tags: ["걸어서 5분"] },
     { name: "가마쿠라 파스타 라이카무 4F", q: "Kamakura Pasta AEON Mall Okinawa Rycom", lat: 26.3142, lng: 127.7959, sub: "라이카무 · 파스타 · 11/29 점심", desc: "4.3 / 약 690. 11:00~23:00. 생햄·반숙 토핑 빼기. 예비: 야키니쿠 나베시마 5F(4.1).", tags: ["몰 안"] },
     { name: "타코라이스 키지무나 데포아일랜드점", q: "Taco rice cafe Kijimuna Depot Island", lat: 26.3161, lng: 127.7548, sub: "아메빌 · 타코라이스 · 11/29 저녁", desc: "4.3 / 약 750. 11:00~22:00. 오무타코는 완숙 요청. 예비: JETTA 버거(4.1, 웰던).", tags: ["연중무휴", "걸어서"] },
     { name: "THE CALIF KITCHEN 오키나와", q: "THE CALIF KITCHEN Okinawa Chatan", sub: "미하마 · 팬케이크 · 11/29 오후", desc: "4.5 / 약 1,390(미검증). 예비: Seaside Cafe Hanon(4.5, 대기 많음).", tags: ["디저트"] },
@@ -103,7 +104,7 @@ window.TRIP = {
     { name: "커피 니시나", q: "Coffee Nishina Naha Makishi", sub: "국제거리 · 디카페인 전문 · 11/30", desc: "디카페인 전문점이라 임산부에게 가장 맞음. 예비: 류큐 츄라유키 빙수(4.8 / 983).", tags: ["카페"] },
     { name: "츄라우미 1F 오션블루 카페", q: "Cafe Ocean Blue Churaumi Aquarium", lat: 26.6944, lng: 127.8780, sub: "수족관 안 · 대수조 앞 카페 · 12/1 점심 대안", desc: "파스타·피자·버거·피시앤칩스(소바 없음). 대수조 앞 자리 1,000엔/50분, 당일 접수. 4F 이노 뷔페는 날것이 많아 비권장.", tags: ["투어 자유시간"] },
     { name: "시만추 민요라이브 차탄 미하마", q: "Shimanchu Minyo Live Chatan Mihama", lat: 26.3176, lng: 127.7551, sub: "레쿠 건물 2F · 오키나와 요리 · 12/1 저녁", desc: "4.2 / 약 150. 16:00~22:00, 부정기 휴무. 전화 예약 권장. 예비: 고디스 버거(4.4 / 약 2,000, 택시 5분, 20시 마감).", tags: ["예약 권장", "호텔 안"] },
-    { name: "스테이크하우스88 나하공항점", q: "Steak House 88 Naha Airport", lat: 26.1967, lng: 127.6490, sub: "공항 연결동 3F · 12/2 점심", desc: "4.1. 09:00~20:30. 예비: A&W 국내선 3F(3.9 / 약 1,870, 루트비어 무카페인), 신슈소바 소지보 4F.", tags: ["귀국일"] },
+    { name: "스테이크하우스88 나하공항점", q: "Steak House 88 Naha Airport", lat: 26.2087, lng: 127.6505, sub: "공항 연결동 3F · 12/2 점심", desc: "4.1. 09:00~20:30. 예비: A&W 국내선 3F(3.9 / 약 1,870, 루트비어 무카페인), 신슈소바 소지보 4F.", tags: ["귀국일"] },
     { name: "Five Star Deli", q: "Five Star Deli Chatan", sub: "지인 추천 · 아메빌 윗동네 · 샌드위치", desc: "11:00~19:00, 수 휴무. 1,000~2,000엔. 영업시간은 받은 자료 기준이라 가기 전에 지도에서 확인.", tags: ["지인 추천"] },
     { name: "류큐노우시 차탄점", q: "Ryukyu no Ushi Chatan", sub: "지인 추천 · 아메빌 · 야키니쿠 코스", desc: "17:00~22:30. 디너코스 6,000~7,000엔(서비스요금 별도). 고기는 완전히 익혀 먹기. 영업시간은 받은 자료 기준이라 가기 전에 지도에서 확인.", tags: ["!완전히 익히기", "지인 추천"] },
     { name: "A&W 아메리칸빌리지", q: "A&W American Village", sub: "지인 추천 · 아메빌 · 버거 체인", desc: "평일 9:00~24:00, 주말 8:00~24:00. 1,000~2,000엔. 루트비어는 무카페인. 영업시간은 받은 자료 기준이라 가기 전에 지도에서 확인.", tags: ["지인 추천"] },
